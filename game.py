@@ -1,10 +1,12 @@
 import random
 from scoreboard import Scoreboard
-from rules import EntityEnum, Rules
-
+from rules import Rules
+from entity import Entity
 
 class Game:
-    def __init__(self, user: str) -> None:
+    """Game class
+    """
+    def __init__(self, user: str, max_round: int = 5) -> None:
         print("Rock paper scissor spock and lizard...\n Welcome to the game.")
         print("Rules are simple...")
         print("Scissors decapitate Lizard, Scissors cuts paper, paper covers rock, rock crushes lizard, lizard poisons Spock, Spock smashes scissors, scissors decapitates lizard, lizard eats paper, paper disproves Spock, Spock vaporizes rock, and as it always has, rock crushes scissors.")
@@ -12,8 +14,8 @@ class Game:
         _ = input()
         
         self.scoreboard = Scoreboard()
-        self.max_round = 5
-        self.entities = EntityEnum
+        self.max_round = max_round
+        self.entities = Entity
         self.rules = Rules()
         self.user: str = user
         self.cpu: str = "cpu"
@@ -23,11 +25,18 @@ class Game:
         self.scoreboard.register_player(self.cpu)
         
     
-    def display_entity_to_select(self):
+    def display_entity_to_select(self) -> None:
+        """Displays the user choices
+        """
         choices_text = ", ".join(f"({entity.value} for {entity.name})" for entity  in self.entities)
         print(f"Select {choices_text}:", end='\t')
     
-    def get_user_input(self):
+    def get_user_input(self) -> Entity:
+        """Takes user inputs and selects the entities
+
+        Returns:
+            Entity: Entity selected by user
+        """
         available_choices = [entity.value for entity in self.entities]
         while True:
             try:
@@ -41,21 +50,43 @@ class Game:
             except ValueError:
                 print("You entered something other than a number")
     
-    def get_cpu_input(self):
+    def get_cpu_input(self) -> Entity:
+        """Selects a random entity
+
+        Returns:
+            Entity: A random entity
+        """
         cpu_choice = random.randint(1, len(self.entities))
         return self.entities(cpu_choice)
     
-    def display_current_round(self, user_entity: EntityEnum, cpu_entity: EntityEnum):
+    def display_current_round(self, user_entity: Entity, cpu_entity: Entity) -> None:
+        """Displays current round
+
+        Args:
+            user_entity (Entity): Entity selected by user
+            cpu_entity (Entity): Entity selected by cpu
+        """
         print(f"{self.user} ({user_entity.name}) x {self.cpu} ({cpu_entity.name})")
         print("....")
     
-    def display_tie(self):
+    def display_tie(self) -> None:
+        """Display tie message
+        """
         print(f"It's a tie..")
     
-    def display_round_winner(self, winner_name: str, winner_entity: EntityEnum, message: str):
+    def display_round_winner(self, winner_name: str, winner_entity: Entity, message: str) -> None:
+        """Display the winner of the round
+
+        Args:
+            winner_name (str): Winner Name
+            winner_entity (Entity): Entity selected by the winner
+            message (str): Reason for wins
+        """
         print(f"{winner_name} ({winner_entity.name}) wins the round as {message}")
     
-    def do_turn(self):
+    def do_turn(self) -> None:
+        """Function to continue the rounds
+        """
         user_entity = self.get_user_input()
         cpu_entity = self.get_cpu_input()
         
@@ -73,7 +104,12 @@ class Game:
             self.scoreboard.points[self.cpu] += 1
     
     @staticmethod
-    def get_user_name():
+    def get_user_name() -> str:
+        """Static method to get user name as input
+
+        Returns:
+            str: Name enterd by user
+        """
         print("Please enter your name:", end='\t')
         return str(input().strip())
         

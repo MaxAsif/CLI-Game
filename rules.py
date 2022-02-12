@@ -1,76 +1,66 @@
-from enum import Enum, auto
-from typing import Set
-
-class EntityEnum(Enum):
-    ROCK = auto()
-    PAPER = auto()
-    SCISSOR = auto()
-    SPOCK = auto()
-    LIZARD = auto()
-
-    def __repr__(self) -> str:
-        return f"{self.name} : {self.value}"
+from entity import Entity
+from typing import Tuple
 
 class Rules:
-    """
-        Class to register all the rules
+    """Class to register all the rules
     """
     rules = {
-            (EntityEnum.PAPER, EntityEnum.ROCK): {
-                'winner': EntityEnum.PAPER,
+            (Entity.PAPER, Entity.ROCK): {
+                'winner': Entity.PAPER,
                 'message': 'Paper covers Rock'
             },
-            (EntityEnum.PAPER, EntityEnum.SPOCK): {
-                'winner': EntityEnum.PAPER,
+            (Entity.PAPER, Entity.SPOCK): {
+                'winner': Entity.PAPER,
                 'message': 'Paper disapproves Spock'
             },
-            (EntityEnum.ROCK, EntityEnum.LIZARD): {
-                'winner': EntityEnum.ROCK,
+            (Entity.ROCK, Entity.LIZARD): {
+                'winner': Entity.ROCK,
                 'message': 'Rock crushes Lizard'
             },
-            (EntityEnum.ROCK, EntityEnum.SCISSOR): {
-                'winner': EntityEnum.ROCK,
+            (Entity.ROCK, Entity.SCISSOR): {
+                'winner': Entity.ROCK,
                 'message': 'Rock crushes Scissor'
             },
-            (EntityEnum.SCISSOR, EntityEnum.PAPER): {
-                'winner':  EntityEnum.SCISSOR,
+            (Entity.SCISSOR, Entity.PAPER): {
+                'winner':  Entity.SCISSOR,
                 'message': 'Scissor cuts Paper'
             },
-            (EntityEnum.SCISSOR, EntityEnum.LIZARD): {
-                'winner': EntityEnum.SCISSOR,
+            (Entity.SCISSOR, Entity.LIZARD): {
+                'winner': Entity.SCISSOR,
                 'message': 'Scissor decapitates Lizard'
             },
-            (EntityEnum.SPOCK, EntityEnum.SCISSOR): {
-                'winner': EntityEnum.SPOCK,
+            (Entity.SPOCK, Entity.SCISSOR): {
+                'winner': Entity.SPOCK,
                 'message': 'Spock smashes Scissor'
             },
-            (EntityEnum.SPOCK, EntityEnum.ROCK): {
-                'winner': EntityEnum.SPOCK,
+            (Entity.SPOCK, Entity.ROCK): {
+                'winner': Entity.SPOCK,
                 'message': 'Spock vaporizes Rock'
             },
-            (EntityEnum.LIZARD, EntityEnum.SPOCK): {
-                'winner': EntityEnum.LIZARD,
+            (Entity.LIZARD, Entity.SPOCK): {
+                'winner': Entity.LIZARD,
                 'message': 'Lizard poisons Spock'
             },
-            (EntityEnum.LIZARD, EntityEnum.PAPER): {
-                'winner': EntityEnum.PAPER,
+            (Entity.LIZARD, Entity.PAPER): {
+                'winner': Entity.PAPER,
                 'message': 'Lizard eats Paper'
             },
             
         }
     
-    def get_winner(self, entity1: EntityEnum, entity2: EntityEnum):
-        """A function to find the winner between two entities
+    def get_winner(self, entity1: Entity, entity2: Entity) -> Tuple[Entity, str]:
+        """A function to find the winner between two entities and reason for win
 
         Args:
-            entity1 (EntityEnum): First entity
-            entity2 (EntityEnum): Second entity
+            entity1 (Entity): First entity
+            entity2 (Entity): Second entity
 
         Raises:
             KeyError: Invalid combination of entity
 
         Returns:
-            EntityEnum: Winner of entity1 and entity2
+            Entity: Winner of entity1 and entity2
+            str: Reason for win
         """
         if (entity1, entity2) in self.rules:
             return self.rules[(entity1, entity2)]['winner'], self.rules[(entity1, entity2)]['message']
